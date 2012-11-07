@@ -9,19 +9,34 @@ use Data::Dumper; #FIXME remove
 our $VERSION = '0.01';
 
 sub poc {
-    my ($self, $array1, $array2) = @_;
+    my ($self, $f, $g) = @_;
 
     my $length = -1; #FIXME following to statements.
-    if ($#$array1 == $#$array2) {
-        $length = $#$array1;
-    } elsif ($#$array1 > $#$array2) {
-        $length = $#$array1;
-        $array2 = $self->_pad($array2, $length);
+    if ($#$f == $#$g) {
+        $length = $#$f;
+    } elsif ($#$f > $#$g) {
+        $length = $#$f;
+        $g = $self->_pad($g, $length);
     } else {
-        $length = $#$array2;
-        $array1 = $self->_pad($array1, $length);
+        $length = $#$g;
+        $f = $self->_pad($f, $length);
     }
 
+    my $result;
+    my $result_length = ($length + 1) / 2;
+    for (my $i = 0; $i <= $length; $i += 2) {
+        my $f_abs = sqrt($f->[$i] * $f->[$i] + $f->[$i+1] * $f->[$i+1]);
+        my $g_abs = sqrt($g->[$i] * $g->[$i] + $g->[$i+1] * $g->[$i+1]);
+
+        my $f_real  = $f->[$i]   / $f_abs;
+        my $f_image = $f->[$i+1] / $f_abs;
+        my $g_real  = $g->[$i]   / $g_abs;
+        my $g_image = $g->[$i+1] / $g_abs;
+
+        $result->[$i]   = ($f_real * $g_real + $f_image * $g_image) / $result_length; # FIXME
+        $result->[$i+1] = ($f_image * $g_real + $f_real * $g_image) / $result_length; # FIXME
+    }
+    return $result;
 }
 
 sub _pad {
