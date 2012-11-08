@@ -8,6 +8,23 @@ use Data::Dumper; #FIXME remove
 
 our $VERSION = '0.01';
 
+sub _adjust_array_length {
+    my ($self, $array1, $array2) = @_;
+
+    my $length = -1;
+    if ($#$array1 == $#$array2) {
+        $length = $#$array1;
+    } elsif ($#$array1 > $#$array2) {
+        $length = $#$array1;
+        $array2 = $self->_pad($array2, $length);
+    } else {
+        $length = $#$array2;
+        $array1 = $self->_pad($array1, $length);
+    }
+
+    return ($length, $array1, $array2);
+}
+
 sub poc {
     my ($self, $f, $g) = @_;
 
