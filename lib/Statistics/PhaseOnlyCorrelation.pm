@@ -4,9 +4,73 @@ use warnings;
 use strict;
 use Carp;
 use Math::FFT;
-use Data::Dumper; #FIXME remove
+use List::MoreUtils qw/mesh/;
+use Data::Dumper;
 
 our $VERSION = '0.01';
+
+sub _poc {
+    my ($self, $f, $g, $length) = @_;
+
+    my $result;
+    for (my $i = 0; $i <= $length; $i += 2) {
+        my $f_abs = sqrt($f->[$i] * $f->[$i] + $f->[$i+1] * $f->[$i+1]);
+        my $g_abs = sqrt($g->[$i] * $g->[$i] + $g->[$i+1] * $g->[$i+1]);
+        my $f_real  = $f->[$i]   / $f_abs;
+        my $f_image = $f->[$i+1] / $f_abs;
+        my $g_real  = $g->[$i]   / $g_abs;
+        my $g_image = $g->[$i+1] / $g_abs;
+        $result->[$i]   = ($f_real * $g_real + $f_image * $g_image);
+        $result->[$i+1] = ($f_image * $g_real - $f_real * $g_image);
+    }
+    return $result;
+}
+
+sub _get_zero_array {
+    my ($self, $length) = @_;
+
+    croak "$!" if $length <= -1;
+
+    my $array;
+    $array->[$_] = 0 for 0 .. $length;
+    return $array;
+}
+
+sub poc_without_fft {
+    my ($self, $f, $g) = @_;
+
+    (my $length, $f, $g) = $self->_adjust_array_length($f, $g);
+    $self->_check_power_of_two($length + 1);
+
+    return $self->_poc($f, $g, $length);
+}
+
+sub poc {
+    my ($self, $ref_f, $ref_g) = @_;
+
+    my @f = @{$ref_f};
+    my @g = @{$ref_g};
+
+    my $f_image_array = $self->_get_zero_array($#$ref_f);
+    my $g_image_array = $self->_get_zero_array($#$ref_g);
+    @f = mesh(@f, @$f_image_array);
+    @g = mesh(@g, @$g_image_array);
+
+    # TODO validate array doesn't have 'undef' element
+
+    my $f_fft = Math::FFT->new(\@f);
+    my $g_fft = Math::FFT->new(\@g);
+
+    my $result = $self->poc_without_fft($f_fft->cdft(), $g_fft->cdft());
+    my $result_fft = Math::FFT->new($result);
+
+    return $result_fft->invcdft($result);
+}
+
+sub _format_array {
+    my ($self, $longer, $shorter) = @_;
+    return ($#$longer, $self->_pad($shorter, $#$longer));
+}
 
 sub _adjust_array_length {
     my ($self, $array1, $array2) = @_;
@@ -15,55 +79,29 @@ sub _adjust_array_length {
     if ($#$array1 == $#$array2) {
         $length = $#$array1;
     } elsif ($#$array1 > $#$array2) {
-        $length = $#$array1;
-        $array2 = $self->_pad($array2, $length);
+        ($length, $array2) = $self->_format_array($array1, $array2);
     } else {
-        $length = $#$array2;
-        $array1 = $self->_pad($array1, $length);
+        ($length, $array1) = $self->_format_array($array2, $array1);
     }
 
     return ($length, $array1, $array2);
 }
 
-sub poc {
-    my ($self, $f, $g) = @_;
-
-    my $length = -1; #FIXME following to statements.
-    if ($#$f == $#$g) {
-        $length = $#$f;
-    } elsif ($#$f > $#$g) {
-        $length = $#$f;
-        $g = $self->_pad($g, $length);
-    } else {
-        $length = $#$g;
-        $f = $self->_pad($f, $length);
-    }
-
-    my $result;
-    my $result_length = ($length + 1) / 2;
-    for (my $i = 0; $i <= $length; $i += 2) {
-        my $f_abs = sqrt($f->[$i] * $f->[$i] + $f->[$i+1] * $f->[$i+1]);
-        my $g_abs = sqrt($g->[$i] * $g->[$i] + $g->[$i+1] * $g->[$i+1]);
-
-        my $f_real  = $f->[$i]   / $f_abs;
-        my $f_image = $f->[$i+1] / $f_abs;
-        my $g_real  = $g->[$i]   / $g_abs;
-        my $g_image = $g->[$i+1] / $g_abs;
-
-        $result->[$i]   = ($f_real * $g_real + $f_image * $g_image) / $result_length; # FIXME
-        $result->[$i+1] = ($f_image * $g_real + $f_real * $g_image) / $result_length; # FIXME
-    }
-    return $result;
-}
-
 sub _pad {
     my ($self, $array, $max) = @_;
-    $array->[$_] = 0 for ($#$array+1)..($max);
-    return $array;
+
+    my @array = @{$array};
+    $array[$_] = 0 for ($#$array+1)..($max);
+
+    return \@array;
 }
 
-sub poc_with_fft {
-    my ($this, @list1, @list2) = @_;
+sub _check_power_of_two {
+    my ($self, $num) = @_;
+
+    for (my $i = 0; ($num != 2 ** $i); $i++) {
+        croak "Array length must be a power of two." if $num < 2 ** $i;
+    }
 }
 1;
 
