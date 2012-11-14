@@ -69,7 +69,7 @@ sub poc {
 
 sub _format_array {
     my ($self, $longer, $shorter) = @_;
-    return ($#$longer, $self->_pad($shorter, $#$longer));
+    return ($#$longer, $self->_zero_fill($shorter, $#$longer));
 }
 
 sub _adjust_array_length {
@@ -87,7 +87,7 @@ sub _adjust_array_length {
     return ($length, $array1, $array2);
 }
 
-sub _pad {
+sub _zero_fill {
     my ($self, $array, $max) = @_;
 
     my @array = @{$array};
