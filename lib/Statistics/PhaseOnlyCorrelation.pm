@@ -8,6 +8,33 @@ use List::MoreUtils qw/mesh/;
 
 our $VERSION = '0.01';
 
+sub poc_without_fft {
+    my ($self, $f, $g) = @_;
+
+    croak 'Both of length of array must be equal.' if ($#$f != $#$g);
+    return $self->_poc($f, $g, $#$f);
+}
+
+sub poc {
+    my ($self, $ref_f, $ref_g) = @_;
+
+    my @f = @{$ref_f};
+    my @g = @{$ref_g};
+
+    my ($length, $f, $g) = $self->_adjust_array_length(\@f, \@g);
+    my $image_array = $self->_get_zero_array($length);
+    @f = mesh(@$f, @$image_array);
+    @g = mesh(@$g, @$image_array);
+
+    my $f_fft = Math::FFT->new(\@f);
+    my $g_fft = Math::FFT->new(\@g);
+
+    my $result = $self->poc_without_fft($f_fft->cdft(), $g_fft->cdft());
+    my $result_fft = Math::FFT->new($result);
+
+    return $result_fft->invcdft($result);
+}
+
 sub _poc {
     my ($self, $f, $g, $length) = @_;
 
@@ -35,42 +62,6 @@ sub _get_zero_array {
     return $array;
 }
 
-sub poc_without_fft {
-    my ($self, $f, $g) = @_;
-
-    (my $length, $f, $g) = $self->_adjust_array_length($f, $g);
-    $self->_check_power_of_two($length + 1);
-
-    return $self->_poc($f, $g, $length);
-}
-
-sub poc {
-    my ($self, $ref_f, $ref_g) = @_;
-
-    my @f = @{$ref_f};
-    my @g = @{$ref_g};
-
-    my $f_image_array = $self->_get_zero_array($#$ref_f);
-    my $g_image_array = $self->_get_zero_array($#$ref_g);
-    @f = mesh(@f, @$f_image_array);
-    @g = mesh(@g, @$g_image_array);
-
-    # TODO validate array doesn't have 'undef' element
-
-    my $f_fft = Math::FFT->new(\@f);
-    my $g_fft = Math::FFT->new(\@g);
-
-    my $result = $self->poc_without_fft($f_fft->cdft(), $g_fft->cdft());
-    my $result_fft = Math::FFT->new($result);
-
-    return $result_fft->invcdft($result);
-}
-
-sub _format_array {
-    my ($self, $longer, $shorter) = @_;
-    return ($#$longer, $self->_zero_fill($shorter, $#$longer));
-}
-
 sub _adjust_array_length {
     my ($self, $array1, $array2) = @_;
 
@@ -78,12 +69,17 @@ sub _adjust_array_length {
     if ($#$array1 == $#$array2) {
         $length = $#$array1;
     } elsif ($#$array1 > $#$array2) {
-        ($length, $array2) = $self->_format_array($array1, $array2);
+        ($length, $array2) = $self->_adjust_array($array1, $array2);
     } else {
-        ($length, $array1) = $self->_format_array($array2, $array1);
+        ($length, $array1) = $self->_adjust_array($array2, $array1);
     }
 
     return ($length, $array1, $array2);
+}
+
+sub _adjust_array {
+    my ($self, $longer, $shorter) = @_;
+    return ($#$longer, $self->_zero_fill($shorter, $#$longer));
 }
 
 sub _zero_fill {
@@ -93,14 +89,6 @@ sub _zero_fill {
     $array[$_] = 0 for ($#$array+1)..($max);
 
     return \@array;
-}
-
-sub _check_power_of_two {
-    my ($self, $num) = @_;
-
-    for (my $i = 0; ($num != 2 ** $i); $i++) {
-        croak "Array length must be a power of two." if $num < 2 ** $i;
-    }
 }
 1;
 
