@@ -137,7 +137,9 @@ Or if you want to use own FFT function, you may use like so:
 
 =head1 DESCRIPTION
 
-    This module calculate Phase Only Correlation coefficients. This measures degree of similarity between two waves (signals) heed to only phase component.
+    This module calculate Phase Only Correlation coefficients. This measures degree of similarity between two waves (signals) heed to only phase component,
+    so this method is not affected by an amplitude difference.
+
     The more similar two signals (waves), coefficient will approximates 1.0. In the opposite case, coefficient will approaches zero.
 
 
@@ -148,9 +150,9 @@ Or if you want to use own FFT function, you may use like so:
 
 =item poc
 
-Calculate phase only correlation with FFT.
+Calculate phase only correlation with FFT (This function is using Math::FFT).
 
-This function needs two arguments. Both of arguments are array reference. Array reference just has real part (don't need imaginary part). And
+This function needs two arguments. Both of arguments are array reference. Array reference just has real part (don't need imaginary part).
 
 =item poc_without_fft
 
