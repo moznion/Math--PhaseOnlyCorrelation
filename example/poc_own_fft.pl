@@ -22,4 +22,4 @@ my $array2_fft = Math::FFT->new(\@array2);
 my $result = Statistics::PhaseOnlyCorrelation->poc_without_fft($array1_fft->cdft(), $array2_fft->cdft());
 
 my $ifft = Math::FFT->new($result);
-$result = $ifft->invcdft($result);
+my $coeff = $ifft->invcdft($result);
