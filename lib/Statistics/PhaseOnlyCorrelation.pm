@@ -94,6 +94,7 @@ sub _zero_fill {
 
 __END__
 
+
 =head1 NAME
 
 Statistics::PhaseOnlyCorrelation - calculate the phase only correlation
@@ -170,6 +171,8 @@ Statistics::PhaseOnlyCorrelation requires no configuration files or environment 
 Math::FFT (Version 1.28 or later)
 
 List::MoreUtils (Version 0.33 or later)
+
+Test::Most (Version 0.31 or later)
 
 
 =head1 INCOMPATIBILITIES
