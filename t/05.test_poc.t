@@ -12,7 +12,7 @@ my ($array1, $array2, $got);
 subtest 'Give different length array' => sub {
     $array1 = [1,2,3,4];
     $array2 = [1,2,3,4,5,6,7,8];
-    pass {Statistics::PhaseOnlyCorrelation->poc($array1, $array2)};
+    lives_ok {Statistics::PhaseOnlyCorrelation->poc($array1, $array2)};
 };
 
 subtest 'Give not 2^n length array and die' => sub {
