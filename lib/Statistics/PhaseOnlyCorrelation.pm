@@ -119,7 +119,7 @@ This document describes Statistics::PhaseOnlyCorrelation version 0.0.1
     my $array1 = [1, 2, 3, 4, 5, 6, 7, 8];
     my $array2 = [1, 2, 3, 4, 5, 6, 7, 8];
 
-    my $coeff = Statistics::PhaseOnlyCorrelation->poc($array1, $array2);
+    my $coeff = Statistics::PhaseOnlyCorrelation::poc($array1, $array2);
 
 Or if you want to use own FFT function, you may use like so:
 
@@ -136,7 +136,7 @@ Or if you want to use own FFT function, you may use like so:
 
     my $array1_fft = Math::FFT->new(\@array1);
     my $array2_fft = Math::FFT->new(\@array2);
-    my $result = Statistics::PhaseOnlyCorrelation->poc_without_fft($array1_fft->cdft(), $array2_fft->cdft());
+    my $result = Statistics::PhaseOnlyCorrelation::poc_without_fft($array1_fft->cdft(), $array2_fft->cdft());
 
     my $ifft = Math::FFT->new($result);
     my $coeff = $ifft->invcdft($result);
