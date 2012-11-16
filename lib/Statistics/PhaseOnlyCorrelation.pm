@@ -3,40 +3,47 @@ package Statistics::PhaseOnlyCorrelation;
 use warnings;
 use strict;
 use Carp;
+use Exporter;
 use Math::FFT;
 use List::MoreUtils qw/mesh/;
 
-our $VERSION = '0.01';
+use vars qw/$VERSION @ISA @EXPORT_OK/;
+
+BEGIN {
+    $VERSION = '0.01';
+    @ISA = qw{Exporter};
+    @EXPORT_OK = qw{poc poc_without_fft}
+}
 
 sub poc_without_fft {
-    my ($self, $f, $g) = @_;
+    my ($f, $g) = @_;
 
     croak 'Both of length of array must be equal.' if ($#$f != $#$g);
-    return $self->_poc($f, $g, $#$f);
+    return _poc($f, $g, $#$f);
 }
 
 sub poc {
-    my ($self, $ref_f, $ref_g) = @_;
+    my ($ref_f, $ref_g) = @_;
 
     my @f = @{$ref_f};
     my @g = @{$ref_g};
 
-    my ($length, $f, $g) = $self->_adjust_array_length(\@f, \@g);
-    my $image_array = $self->_get_zero_array($length);
+    my ($length, $f, $g) = _adjust_array_length(\@f, \@g);
+    my $image_array = _get_zero_array($length);
     @f = mesh(@$f, @$image_array);
     @g = mesh(@$g, @$image_array);
 
     my $f_fft = Math::FFT->new(\@f);
     my $g_fft = Math::FFT->new(\@g);
 
-    my $result = $self->poc_without_fft($f_fft->cdft(), $g_fft->cdft());
+    my $result = poc_without_fft($f_fft->cdft(), $g_fft->cdft());
     my $result_fft = Math::FFT->new($result);
 
     return $result_fft->invcdft($result);
 }
 
 sub _poc {
-    my ($self, $f, $g, $length) = @_;
+    my ($f, $g, $length) = @_;
 
     my $result;
     for (my $i = 0; $i <= $length; $i += 2) {
@@ -53,7 +60,7 @@ sub _poc {
 }
 
 sub _get_zero_array {
-    my ($self, $length) = @_;
+    my $length = shift;
 
     croak "$!" if $length <= -1;
 
@@ -63,27 +70,27 @@ sub _get_zero_array {
 }
 
 sub _adjust_array_length {
-    my ($self, $array1, $array2) = @_;
+    my ($array1, $array2) = @_;
 
     my $length = -1;
     if ($#$array1 == $#$array2) {
         $length = $#$array1;
     } elsif ($#$array1 > $#$array2) {
-        ($length, $array2) = $self->_adjust_array($array1, $array2);
+        ($length, $array2) = _adjust_array($array1, $array2);
     } else {
-        ($length, $array1) = $self->_adjust_array($array2, $array1);
+        ($length, $array1) = _adjust_array($array2, $array1);
     }
 
     return ($length, $array1, $array2);
 }
 
 sub _adjust_array {
-    my ($self, $longer, $shorter) = @_;
-    return ($#$longer, $self->_zero_fill($shorter, $#$longer));
+    my ($longer, $shorter) = @_;
+    return ($#$longer, _zero_fill($shorter, $#$longer));
 }
 
 sub _zero_fill {
-    my ($self, $array, $max) = @_;
+    my ($array, $max) = @_;
 
     my @array = @{$array};
     $array[$_] = 0 for ($#$array+1)..($max);

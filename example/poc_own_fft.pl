@@ -8,7 +8,7 @@ use Math::FFT;
 
 use FindBin;
 use lib ("$FindBin::Bin/../lib");
-use Statistics::PhaseOnlyCorrelation;
+use Statistics::PhaseOnlyCorrelation qw/poc_without_fft/;
 
 my @array1 = (1, 2, 3, 4, 5, 6, 7, 8);
 my @array2 = (1, 2, 3, 4, 5, 6, 7, 8);
@@ -19,7 +19,7 @@ my @zero_array = (0, 0, 0, 0, 0, 0, 0, 0); # <= imaginary components
 
 my $array1_fft = Math::FFT->new(\@array1);
 my $array2_fft = Math::FFT->new(\@array2);
-my $result = Statistics::PhaseOnlyCorrelation->poc_without_fft($array1_fft->cdft(), $array2_fft->cdft());
+my $result = poc_without_fft($array1_fft->cdft(), $array2_fft->cdft());
 
 my $ifft = Math::FFT->new($result);
 my $coeff = $ifft->invcdft($result);
