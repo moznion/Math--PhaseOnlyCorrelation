@@ -10,51 +10,53 @@ use List::MoreUtils qw/mesh/;
 use vars qw/$VERSION @ISA @EXPORT_OK/;
 
 BEGIN {
-    $VERSION = '0.01';
-    @ISA = qw{Exporter};
-    @EXPORT_OK = qw{poc poc_without_fft}
+    $VERSION   = '0.01';
+    @ISA       = qw{Exporter};
+    @EXPORT_OK = qw{poc poc_without_fft};
 }
 
 sub poc_without_fft {
-    my ($f, $g) = @_;
+    my ( $f, $g ) = @_;
 
-    croak 'Both of length of array must be equal.' if ($#$f != $#$g);
-    return _poc($f, $g, $#$f);
+    croak 'Both of length of array must be equal.' if ( $#$f != $#$g );
+    return _poc( $f, $g, $#$f );
 }
 
 sub poc {
-    my ($ref_f, $ref_g) = @_;
+    my ( $ref_f, $ref_g ) = @_;
 
     my @f = @{$ref_f};
     my @g = @{$ref_g};
 
-    my ($length, $f, $g) = _adjust_array_length(\@f, \@g);
+    my ( $length, $f, $g ) = _adjust_array_length( \@f, \@g );
     my $image_array = _get_zero_array($length);
-    @f = mesh(@$f, @$image_array);
-    @g = mesh(@$g, @$image_array);
+    @f = mesh( @$f, @$image_array );
+    @g = mesh( @$g, @$image_array );
 
-    my $f_fft = Math::FFT->new(\@f);
-    my $g_fft = Math::FFT->new(\@g);
+    my $f_fft = Math::FFT->new( \@f );
+    my $g_fft = Math::FFT->new( \@g );
 
-    my $result = poc_without_fft($f_fft->cdft(), $g_fft->cdft());
+    my $result = poc_without_fft( $f_fft->cdft(), $g_fft->cdft() );
     my $result_fft = Math::FFT->new($result);
 
     return $result_fft->invcdft($result);
 }
 
 sub _poc {
-    my ($f, $g, $length) = @_;
+    my ( $f, $g, $length ) = @_;
 
     my $result;
-    for (my $i = 0; $i <= $length; $i += 2) {
-        my $f_abs = sqrt($f->[$i] * $f->[$i] + $f->[$i+1] * $f->[$i+1]);
-        my $g_abs = sqrt($g->[$i] * $g->[$i] + $g->[$i+1] * $g->[$i+1]);
-        my $f_real  = $f->[$i]   / $f_abs;
-        my $f_image = $f->[$i+1] / $f_abs;
-        my $g_real  = $g->[$i]   / $g_abs;
-        my $g_image = $g->[$i+1] / $g_abs;
-        $result->[$i]   = ($f_real * $g_real + $f_image * $g_image);
-        $result->[$i+1] = ($f_image * $g_real - $f_real * $g_image);
+    for ( my $i = 0 ; $i <= $length ; $i += 2 ) {
+        my $f_abs =
+          sqrt( $f->[$i] * $f->[$i] + $f->[ $i + 1 ] * $f->[ $i + 1 ] );
+        my $g_abs =
+          sqrt( $g->[$i] * $g->[$i] + $g->[ $i + 1 ] * $g->[ $i + 1 ] );
+        my $f_real  = $f->[$i] / $f_abs;
+        my $f_image = $f->[ $i + 1 ] / $f_abs;
+        my $g_real  = $g->[$i] / $g_abs;
+        my $g_image = $g->[ $i + 1 ] / $g_abs;
+        $result->[$i] = ( $f_real * $g_real + $f_image * $g_image );
+        $result->[ $i + 1 ] = ( $f_image * $g_real - $f_real * $g_image );
     }
     return $result;
 }
@@ -70,30 +72,32 @@ sub _get_zero_array {
 }
 
 sub _adjust_array_length {
-    my ($array1, $array2) = @_;
+    my ( $array1, $array2 ) = @_;
 
     my $length = -1;
-    if ($#$array1 == $#$array2) {
+    if ( $#$array1 == $#$array2 ) {
         $length = $#$array1;
-    } elsif ($#$array1 > $#$array2) {
-        ($length, $array2) = _adjust_array($array1, $array2);
-    } else {
-        ($length, $array1) = _adjust_array($array2, $array1);
+    }
+    elsif ( $#$array1 > $#$array2 ) {
+        ( $length, $array2 ) = _adjust_array( $array1, $array2 );
+    }
+    else {
+        ( $length, $array1 ) = _adjust_array( $array2, $array1 );
     }
 
-    return ($length, $array1, $array2);
+    return ( $length, $array1, $array2 );
 }
 
 sub _adjust_array {
-    my ($longer, $shorter) = @_;
-    return ($#$longer, _zero_fill($shorter, $#$longer));
+    my ( $longer, $shorter ) = @_;
+    return ( $#$longer, _zero_fill( $shorter, $#$longer ) );
 }
 
 sub _zero_fill {
-    my ($array, $max) = @_;
+    my ( $array, $max ) = @_;
 
     my @array = @{$array};
-    $array[$_] = 0 for ($#$array+1)..($max);
+    $array[$_] = 0 for ( $#$array + 1 ) .. ($max);
 
     return \@array;
 }
