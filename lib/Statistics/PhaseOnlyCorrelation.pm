@@ -113,7 +113,7 @@ Statistics::PhaseOnlyCorrelation - calculate the phase only correlation
 
 =head1 VERSION
 
-This document describes Statistics::PhaseOnlyCorrelation version 0.0.1
+This document describes Statistics::PhaseOnlyCorrelation version 0.01
 
 
 =head1 SYNOPSIS
