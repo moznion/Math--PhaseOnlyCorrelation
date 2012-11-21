@@ -1,5 +1,8 @@
 Revision history for Statistics-PhaseOnlyCorrelation
 
+0.02  Wed Nov 21 13:12:24 2012
+    - Fixed misprint. And changed version of EU::MM.
+
 0.01  Mon Nov 19 00:28:04 2012
     - Initial release.
 
