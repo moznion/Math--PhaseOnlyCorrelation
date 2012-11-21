@@ -22,15 +22,22 @@ subtest 'Correlation same signal' => sub {
         $array2_fft->cdft() );
     $result_fft = Math::FFT->new($result);
     $got        = $result_fft->invcdft($result);
-    is_deeply(
-        $got,
-        [
-            1,                    0, -3.92523114670944e-17, 0,
-            5.55111512312578e-17, 0, 3.92523114670944e-17,  0,
-            0,                    0, 3.92523114670944e-17,  0,
-            5.55111512312578e-17, 0, -3.92523114670944e-17, 0
-        ]
-    );
+    ok($got->[0] eq 1);
+    ok($got->[1] eq 0 || $got->[1] eq '-0');
+    ok($got->[2] eq -3.92523114670944e-17);
+    ok($got->[3] eq 0 || $got->[3] eq '-0');
+    ok($got->[4] eq 5.55111512312578e-17);
+    ok($got->[5] eq 0 || $got->[5] eq '-0');
+    ok($got->[6] eq 3.92523114670944e-17);
+    ok($got->[7] eq 0 || $got->[7] eq '-0');
+    ok($got->[8] eq 0);
+    ok($got->[9] eq 0 || $got->[9] eq '-0');
+    ok($got->[10] eq 3.92523114670944e-17);
+    ok($got->[11] eq 0 || $got->[11] eq '-0');
+    ok($got->[12] eq 5.55111512312578e-17);
+    ok($got->[13] eq 0 || $got->[13] eq '-0');
+    ok($got->[14] eq -3.92523114670944e-17);
+    ok($got->[15] eq 0 || $got->[15] eq '-0');
 };
 
 subtest 'Correlation different signal' => sub {
@@ -41,15 +48,22 @@ subtest 'Correlation different signal' => sub {
         $array2_fft->cdft() );
     $result_fft = Math::FFT->new($result);
     $got        = $result_fft->invcdft($result);
-    is_deeply(
-        $got,
-        [
-            -0.25, 0, 0.603553390593274,  0,
-            -0.25, 0, 0.103553390593274,  0,
-            -0.25, 0, -0.103553390593274, -0,
-            -0.25, 0, -0.603553390593274, 0
-        ]
-    );
+    ok($got->[0] eq -0.25);
+    ok($got->[1] eq 0 || $got->[1] eq '-0');
+    ok($got->[2] eq 0.603553390593274);
+    ok($got->[3] eq 0 || $got->[3] eq '-0');
+    ok($got->[4] eq -0.25);
+    ok($got->[5] eq 0 || $got->[5] eq '-0');
+    ok($got->[6] eq 0.103553390593274);
+    ok($got->[7] eq 0 || $got->[7] eq '-0');
+    ok($got->[8] eq -0.25);
+    ok($got->[9] eq 0 || $got->[9] eq '-0');
+    ok($got->[10] eq -0.103553390593274);
+    ok($got->[11] eq 0 || $got->[11] eq '-0');
+    ok($got->[12] eq -0.25);
+    ok($got->[13] eq 0 || $got->[13] eq '-0');
+    ok($got->[14] eq -0.603553390593274);
+    ok($got->[15] eq 0 || $got->[15] eq '-0');
 };
 
 subtest 'Correlation similar signal' => sub {
@@ -60,15 +74,22 @@ subtest 'Correlation similar signal' => sub {
         $array2_fft->cdft() );
     $result_fft = Math::FFT->new($result);
     $got        = $result_fft->invcdft($result);
-    is_deeply(
-        $got,
-        [
-            0.998032565636364,   0, 0.0366894970913469,  0,
-            -0.0233394555681124, 0, 0.0106622350554301,  0,
-            0.00140150322585453, 0, -0.0129069223836222, 0,
-            0.0239053867058937,  0, -0.0344448097631548, 0
-        ]
-    );
+    ok($got->[0] eq 0.998032565636364);
+    ok($got->[1] eq 0 || $got->[1] eq '-0');
+    ok($got->[2] eq 0.0366894970913469);
+    ok($got->[3] eq 0 || $got->[3] eq '-0');
+    ok($got->[4] eq -0.0233394555681124);
+    ok($got->[5] eq 0 || $got->[5] eq '-0');
+    ok($got->[6] eq 0.0106622350554301);
+    ok($got->[7] eq 0 || $got->[7] eq '-0');
+    ok($got->[8] eq 0.00140150322585453);
+    ok($got->[9] eq 0 || $got->[9] eq '-0');
+    ok($got->[10] eq -0.0129069223836222);
+    ok($got->[11] eq 0 || $got->[11] eq '-0');
+    ok($got->[12] eq 0.0239053867058937);
+    ok($got->[13] eq 0 || $got->[13] eq '-0');
+    ok($got->[14] eq -0.0344448097631548);
+    ok($got->[15] eq 0 || $got->[15] eq '-0');
 };
 
 subtest 'Give different length and die' => sub {
