@@ -38,6 +38,7 @@ subtest 'Correlation same signal' => sub {
     ok($got->[13] eq 0 || $got->[13] eq '-0');
     ok($got->[14] eq -3.92523114670944e-17);
     ok($got->[15] eq 0 || $got->[15] eq '-0');
+    done_testing();
 };
 
 subtest 'Correlation different signal' => sub {
@@ -64,6 +65,7 @@ subtest 'Correlation different signal' => sub {
     ok($got->[13] eq 0 || $got->[13] eq '-0');
     ok($got->[14] eq -0.603553390593274);
     ok($got->[15] eq 0 || $got->[15] eq '-0');
+    done_testing();
 };
 
 subtest 'Correlation similar signal' => sub {
@@ -90,6 +92,7 @@ subtest 'Correlation similar signal' => sub {
     ok($got->[13] eq 0 || $got->[13] eq '-0');
     ok($got->[14] eq -0.0344448097631548);
     ok($got->[15] eq 0 || $got->[15] eq '-0');
+    done_testing();
 };
 
 subtest 'Give different length and die' => sub {
@@ -99,6 +102,7 @@ subtest 'Give different length and die' => sub {
         Statistics::PhaseOnlyCorrelation::poc_without_fft( $array1_fft->cdft(),
             $array2_fft->cdft() );
     };
+    done_testing();
 };
 
 done_testing();

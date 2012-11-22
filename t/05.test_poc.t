@@ -13,12 +13,14 @@ subtest 'Give different length array' => sub {
     $array1 = [ 1, 2, 3, 4 ];
     $array2 = [ 1, 2, 3, 4, 5, 6, 7, 8 ];
     lives_ok { Statistics::PhaseOnlyCorrelation::poc( $array1, $array2 ) };
+    done_testing();
 };
 
 subtest 'Give not 2^n length array and die' => sub {
     $array1 = [ 1, 2, 3, 4, 5 ];
     $array2 = [ 1, 2, 3, 4, 5 ];
     dies_ok { Statistics::PhaseOnlyCorrelation::poc( $array1, $array2 ) };
+    done_testing();
 };
 
 subtest 'Correlation same signal' => sub {
@@ -41,6 +43,7 @@ subtest 'Correlation same signal' => sub {
     ok($got->[13] eq 0 || $got->[13] eq '-0');
     ok($got->[14] eq -3.92523114670944e-17);
     ok($got->[15] eq 0 || $got->[15] eq '-0');
+    done_testing();
 };
 
 subtest 'Correlation different signal' => sub {
@@ -62,6 +65,7 @@ subtest 'Correlation different signal' => sub {
     ok($got->[13] eq 0 || $got->[13] eq '-0');
     ok($got->[14] eq -0.603553390593274);
     ok($got->[15] eq 0 || $got->[15] eq '-0');
+    done_testing();
 };
 
 subtest 'Correlation similar signal' => sub {
@@ -83,11 +87,13 @@ subtest 'Correlation similar signal' => sub {
     ok($got->[13] eq 0 || $got->[13] eq '-0');
     ok($got->[14] eq -0.0344448097631548);
     ok($got->[15] eq 0 || $got->[15] eq '-0');
+    done_testing();
 };
 
 subtest 'Check non destructive' => sub {
     is_deeply( $array1, [ 1,   2, 3,   4, 5,   6, 7,   8 ] );
     is_deeply( $array2, [ 1.1, 2, 3.3, 4, 5.5, 6, 7.7, 8 ] );
+    done_testing();
 };
 
 done_testing();
