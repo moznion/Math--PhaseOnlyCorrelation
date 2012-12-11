@@ -3,12 +3,10 @@
 use utf8;
 use strict;
 
-use POSIX;
 use Math::FFT;
 use Statistics::PhaseOnlyCorrelation;
 
 BEGIN {
-    use Test::Number::Delta within => POSIX::FLT_EPSILON;
     use Test::Most tests => 4;
 }
 
@@ -26,22 +24,22 @@ subtest 'Correlation same signal' => sub {
         $array2_fft->cdft() );
     $result_fft = Math::FFT->new($result);
     $got        = $result_fft->invcdft($result);
-    delta_ok($got->[0],  1);
-    delta_ok($got->[1],  0);
-    delta_ok($got->[2],  -3.92523114670944e-17);
-    delta_ok($got->[3],  0);
-    delta_ok($got->[4],  5.55111512312578e-17);
-    delta_ok($got->[5],  0);
-    delta_ok($got->[6],  3.92523114670944e-17);
-    delta_ok($got->[7],  0);
-    delta_ok($got->[8],  0);
-    delta_ok($got->[9],  0);
-    delta_ok($got->[10], 3.92523114670944e-17);
-    delta_ok($got->[11], 0);
-    delta_ok($got->[12], 5.55111512312578e-17);
-    delta_ok($got->[13], 0);
-    delta_ok($got->[14], -3.92523114670944e-17);
-    delta_ok($got->[15], 0);
+    ok(sprintf('%1.7f', $got->[0])  == sprintf('%1.7f', 1));
+    ok(sprintf('%1.7f', $got->[1])  == sprintf('%1.7f', 0));
+    ok(sprintf('%1.7f', $got->[2])  == sprintf('%1.7f', -3.92523114670944e-17));
+    ok(sprintf('%1.7f', $got->[3])  == sprintf('%1.7f', 0));
+    ok(sprintf('%1.7f', $got->[4])  == sprintf('%1.7f', 5.55111512312578e-17));
+    ok(sprintf('%1.7f', $got->[5])  == sprintf('%1.7f', 0));
+    ok(sprintf('%1.7f', $got->[6])  == sprintf('%1.7f', 3.92523114670944e-17));
+    ok(sprintf('%1.7f', $got->[7])  == sprintf('%1.7f', 0));
+    ok(sprintf('%1.7f', $got->[8])  == sprintf('%1.7f', 0));
+    ok(sprintf('%1.7f', $got->[9])  == sprintf('%1.7f', 0));
+    ok(sprintf('%1.7f', $got->[10]) == sprintf('%1.7f', 3.92523114670944e-17));
+    ok(sprintf('%1.7f', $got->[11]) == sprintf('%1.7f', 0));
+    ok(sprintf('%1.7f', $got->[12]) == sprintf('%1.7f', 5.55111512312578e-17));
+    ok(sprintf('%1.7f', $got->[13]) == sprintf('%1.7f', 0));
+    ok(sprintf('%1.7f', $got->[14]) == sprintf('%1.7f', -3.92523114670944e-17));
+    ok(sprintf('%1.7f', $got->[15]) == sprintf('%1.7f', 0));
 };
 
 subtest 'Correlation different signal' => sub {
@@ -52,21 +50,22 @@ subtest 'Correlation different signal' => sub {
         $array2_fft->cdft() );
     $result_fft = Math::FFT->new($result);
     $got        = $result_fft->invcdft($result);
-    delta_ok($got->[0],  -0.25);
-    delta_ok($got->[1],  0);
-    delta_ok($got->[2],  0.603553390593274);
-    delta_ok($got->[3],  0);
-    delta_ok($got->[4],  -0.25); delta_ok($got->[5],  0);
-    delta_ok($got->[6],  0.103553390593274);
-    delta_ok($got->[7],  0);
-    delta_ok($got->[8],  -0.25);
-    delta_ok($got->[9],  0);
-    delta_ok($got->[10], -0.103553390593274);
-    delta_ok($got->[11], 0);
-    delta_ok($got->[12], -0.25);
-    delta_ok($got->[13], 0);
-    delta_ok($got->[14], -0.603553390593274);
-    delta_ok($got->[15], 0);
+    ok(sprintf('%1.7f', $got->[0])  == sprintf('%1.7f', -0.25));
+    ok(sprintf('%1.7f', $got->[1])  == sprintf('%1.7f', 0));
+    ok(sprintf('%1.7f', $got->[2])  == sprintf('%1.7f', 0.603553390593274));
+    ok(sprintf('%1.7f', $got->[3])  == sprintf('%1.7f', 0));
+    ok(sprintf('%1.7f', $got->[4])  == sprintf('%1.7f', -0.25));
+    ok(sprintf('%1.7f', $got->[5])  == sprintf('%1.7f', 0));
+    ok(sprintf('%1.7f', $got->[6])  == sprintf('%1.7f', 0.103553390593274));
+    ok(sprintf('%1.7f', $got->[7])  == sprintf('%1.7f', 0));
+    ok(sprintf('%1.7f', $got->[8])  == sprintf('%1.7f', -0.25));
+    ok(sprintf('%1.7f', $got->[9])  == sprintf('%1.7f', 0));
+    ok(sprintf('%1.7f', $got->[10]) == sprintf('%1.7f', -0.103553390593274));
+    ok(sprintf('%1.7f', $got->[11]) == sprintf('%1.7f', 0));
+    ok(sprintf('%1.7f', $got->[12]) == sprintf('%1.7f', -0.25));
+    ok(sprintf('%1.7f', $got->[13]) == sprintf('%1.7f', 0));
+    ok(sprintf('%1.7f', $got->[14]) == sprintf('%1.7f', -0.603553390593274));
+    ok(sprintf('%1.7f', $got->[15]) == sprintf('%1.7f', 0));
 };
 
 subtest 'Correlation similar signal' => sub {
@@ -77,22 +76,22 @@ subtest 'Correlation similar signal' => sub {
         $array2_fft->cdft() );
     $result_fft = Math::FFT->new($result);
     $got        = $result_fft->invcdft($result);
-    delta_ok($got->[0],  0.998032565636364);
-    delta_ok($got->[1],  0);
-    delta_ok($got->[2],  0.0366894970913469);
-    delta_ok($got->[3],  0);
-    delta_ok($got->[4],  -0.0233394555681124);
-    delta_ok($got->[5],  0);
-    delta_ok($got->[6],  0.0106622350554301);
-    delta_ok($got->[7],  0);
-    delta_ok($got->[8],  0.00140150322585453);
-    delta_ok($got->[9],  0);
-    delta_ok($got->[10], -0.0129069223836222);
-    delta_ok($got->[11], 0);
-    delta_ok($got->[12], 0.0239053867058937);
-    delta_ok($got->[13], 0);
-    delta_ok($got->[14], -0.0344448097631548);
-    delta_ok($got->[15], 0);
+    ok(sprintf('%1.7f', $got->[0])  == sprintf('%1.7f', 0.998032565636364));
+    ok(sprintf('%1.7f', $got->[1])  == sprintf('%1.7f', 0));
+    ok(sprintf('%1.7f', $got->[2])  == sprintf('%1.7f', 0.0366894970913469));
+    ok(sprintf('%1.7f', $got->[3])  == sprintf('%1.7f', 0));
+    ok(sprintf('%1.7f', $got->[4])  == sprintf('%1.7f', -0.0233394555681124));
+    ok(sprintf('%1.7f', $got->[5])  == sprintf('%1.7f', 0));
+    ok(sprintf('%1.7f', $got->[6])  == sprintf('%1.7f', 0.0106622350554301));
+    ok(sprintf('%1.7f', $got->[7])  == sprintf('%1.7f', 0));
+    ok(sprintf('%1.7f', $got->[8])  == sprintf('%1.7f', 0.00140150322585453));
+    ok(sprintf('%1.7f', $got->[9])  == sprintf('%1.7f', 0));
+    ok(sprintf('%1.7f', $got->[10]) == sprintf('%1.7f', -0.0129069223836222));
+    ok(sprintf('%1.7f', $got->[11]) == sprintf('%1.7f', 0));
+    ok(sprintf('%1.7f', $got->[12]) == sprintf('%1.7f', 0.0239053867058937));
+    ok(sprintf('%1.7f', $got->[13]) == sprintf('%1.7f', 0));
+    ok(sprintf('%1.7f', $got->[14]) == sprintf('%1.7f', -0.0344448097631548));
+    ok(sprintf('%1.7f', $got->[15]) == sprintf('%1.7f', 0));
 };
 
 subtest 'Give different length and die' => sub {

@@ -11,7 +11,6 @@ WriteMakefile(
     BUILD_REQUIRES => {
         'Test::More' => 0.98,
         'Test::Most' => 0.31,
-        'Test::Number::Delta' => 1.03,
         'ExtUtils::MakeMaker' => 6.62,
     },
     CONFIGURE_REQUIRES => {

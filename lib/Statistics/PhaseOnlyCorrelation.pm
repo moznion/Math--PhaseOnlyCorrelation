@@ -187,8 +187,6 @@ List::MoreUtils (Version 0.33 or later)
 
 Test::Most (Version 0.31 or later)
 
-Test::Number::Delta (Version 1.03 or later)
-
 
 =head1 INCOMPATIBILITIES
 
