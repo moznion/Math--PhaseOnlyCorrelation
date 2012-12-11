@@ -10,7 +10,7 @@ use List::MoreUtils qw/mesh/;
 use vars qw/$VERSION @ISA @EXPORT_OK/;
 
 BEGIN {
-    $VERSION   = '0.03';
+    $VERSION   = '0.04';
     @ISA       = qw{Exporter};
     @EXPORT_OK = qw{poc poc_without_fft};
 }
@@ -113,7 +113,7 @@ Statistics::PhaseOnlyCorrelation - calculate the phase only correlation
 
 =head1 VERSION
 
-This document describes Statistics::PhaseOnlyCorrelation version 0.03
+This document describes Statistics::PhaseOnlyCorrelation version 0.04
 
 
 =head1 SYNOPSIS
