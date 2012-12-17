@@ -3,10 +3,10 @@ use warnings;
 use ExtUtils::MakeMaker;
 
 WriteMakefile(
-    NAME                => 'Statistics::PhaseOnlyCorrelation',
+    NAME                => 'Math::PhaseOnlyCorrelation',
     AUTHOR              => 'moznion <moznion@gmail.com>',
-    VERSION_FROM        => 'lib/Statistics/PhaseOnlyCorrelation.pm',
-    ABSTRACT_FROM       => 'lib/Statistics/PhaseOnlyCorrelation.pm',
+    VERSION_FROM        => 'lib/Math/PhaseOnlyCorrelation.pm',
+    ABSTRACT_FROM       => 'lib/Math/PhaseOnlyCorrelation.pm',
     PL_FILES            => {},
     BUILD_REQUIRES => {
         'Test::More' => 0.98,
@@ -23,10 +23,10 @@ WriteMakefile(
     META_MERGE => {
         resources => {
             license => 'http://dev.perl.org/licenses/',
-            repository => 'git://github.com/moznion/Statistics--PhaseOnlyCorrelation.git',
+            repository => 'git://github.com/moznion/Math--PhaseOnlyCorrelation.git',
         },
     },
     LICENSE             => 'perl',
     dist                => { COMPRESS => 'gzip -9f', SUFFIX => 'gz', },
-    clean               => { FILES => 'Statistics-PhaseOnlyCorrelation-*' },
+    clean               => { FILES => 'Math-PhaseOnlyCorrelation-*' },
 );

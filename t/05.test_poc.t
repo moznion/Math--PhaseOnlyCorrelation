@@ -3,7 +3,7 @@
 use utf8;
 use strict;
 
-use Statistics::PhaseOnlyCorrelation;
+use Math::PhaseOnlyCorrelation;
 
 BEGIN {
     use Test::Most tests => 6;
@@ -14,19 +14,19 @@ my ( $array1, $array2, $got );
 subtest 'Give different length array' => sub {
     $array1 = [ 1, 2, 3, 4 ];
     $array2 = [ 1, 2, 3, 4, 5, 6, 7, 8 ];
-    lives_ok { Statistics::PhaseOnlyCorrelation::poc( $array1, $array2 ) };
+    lives_ok { Math::PhaseOnlyCorrelation::poc( $array1, $array2 ) };
 };
 
 subtest 'Give not 2^n length array and die' => sub {
     $array1 = [ 1, 2, 3, 4, 5 ];
     $array2 = [ 1, 2, 3, 4, 5 ];
-    dies_ok { Statistics::PhaseOnlyCorrelation::poc( $array1, $array2 ) };
+    dies_ok { Math::PhaseOnlyCorrelation::poc( $array1, $array2 ) };
 };
 
 subtest 'Correlation same signal' => sub {
     $array1 = [ 1, 2, 3, 4, 5, 6, 7, 8 ];
     $array2 = [ 1, 2, 3, 4, 5, 6, 7, 8 ];
-    $got = Statistics::PhaseOnlyCorrelation::poc( $array1, $array2 );
+    $got = Math::PhaseOnlyCorrelation::poc( $array1, $array2 );
     ok(sprintf('%1.7f', $got->[0])  == sprintf('%1.7f', 1));
     ok(sprintf('%1.7f', $got->[1])  == sprintf('%1.7f', 0));
     ok(sprintf('%1.7f', $got->[2])  == sprintf('%1.7f', -3.92523114670944e-17));
@@ -47,7 +47,7 @@ subtest 'Correlation same signal' => sub {
 
 subtest 'Correlation different signal' => sub {
     $array2 = [ 1, -2, 3, -4, 5, -6, 7, -8 ];
-    $got = Statistics::PhaseOnlyCorrelation::poc( $array1, $array2 );
+    $got = Math::PhaseOnlyCorrelation::poc( $array1, $array2 );
     ok(sprintf('%1.7f', $got->[0])  == sprintf('%1.7f', -0.25));
     ok(sprintf('%1.7f', $got->[1])  == sprintf('%1.7f', 0));
     ok(sprintf('%1.7f', $got->[2])  == sprintf('%1.7f', 0.603553390593274));
@@ -68,7 +68,7 @@ subtest 'Correlation different signal' => sub {
 
 subtest 'Correlation similar signal' => sub {
     $array2 = [ 1.1, 2, 3.3, 4, 5.5, 6, 7.7, 8 ];
-    $got = Statistics::PhaseOnlyCorrelation::poc( $array1, $array2 );
+    $got = Math::PhaseOnlyCorrelation::poc( $array1, $array2 );
     ok(sprintf('%1.7f', $got->[0])  == sprintf('%1.7f', 0.998032565636364));
     ok(sprintf('%1.7f', $got->[1])  == sprintf('%1.7f', 0));
     ok(sprintf('%1.7f', $got->[2])  == sprintf('%1.7f', 0.0366894970913469));

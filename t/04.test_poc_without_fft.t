@@ -4,7 +4,7 @@ use utf8;
 use strict;
 
 use Math::FFT;
-use Statistics::PhaseOnlyCorrelation;
+use Math::PhaseOnlyCorrelation;
 
 BEGIN {
     use Test::Most tests => 4;
@@ -20,7 +20,7 @@ subtest 'Correlation same signal' => sub {
     $array1_fft = Math::FFT->new($array1);
     $array2_fft = Math::FFT->new($array2);
     $result =
-      Statistics::PhaseOnlyCorrelation::poc_without_fft( $array1_fft->cdft(),
+      Math::PhaseOnlyCorrelation::poc_without_fft( $array1_fft->cdft(),
         $array2_fft->cdft() );
     $result_fft = Math::FFT->new($result);
     $got        = $result_fft->invcdft($result);
@@ -46,7 +46,7 @@ subtest 'Correlation different signal' => sub {
     $array2 = [ 1, 0, -2, 0, 3, 0, -4, 0, 5, 0, -6, 0, 7, 0, -8, 0 ];
     $array2_fft = Math::FFT->new($array2);
     $result =
-      Statistics::PhaseOnlyCorrelation::poc_without_fft( $array1_fft->cdft(),
+      Math::PhaseOnlyCorrelation::poc_without_fft( $array1_fft->cdft(),
         $array2_fft->cdft() );
     $result_fft = Math::FFT->new($result);
     $got        = $result_fft->invcdft($result);
@@ -72,7 +72,7 @@ subtest 'Correlation similar signal' => sub {
     $array2 = [ 1.1, 0, 2, 0, 3.3, 0, 4, 0, 5.5, 0, 6, 0, 7.7, 0, 8, 0 ];
     $array2_fft = Math::FFT->new($array2);
     $result =
-      Statistics::PhaseOnlyCorrelation::poc_without_fft( $array1_fft->cdft(),
+      Math::PhaseOnlyCorrelation::poc_without_fft( $array1_fft->cdft(),
         $array2_fft->cdft() );
     $result_fft = Math::FFT->new($result);
     $got        = $result_fft->invcdft($result);
@@ -98,7 +98,7 @@ subtest 'Give different length and die' => sub {
     $array2 = [ 1, 0, 2, 0, 3, 0, 4, 0 ];
     $array2_fft = Math::FFT->new($array2);
     dies_ok {
-        Statistics::PhaseOnlyCorrelation::poc_without_fft( $array1_fft->cdft(),
+        Math::PhaseOnlyCorrelation::poc_without_fft( $array1_fft->cdft(),
             $array2_fft->cdft() );
     };
 };

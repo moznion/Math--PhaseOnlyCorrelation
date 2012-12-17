@@ -1,4 +1,4 @@
-package Statistics::PhaseOnlyCorrelation;
+package Math::PhaseOnlyCorrelation;
 
 use warnings;
 use strict;
@@ -10,7 +10,7 @@ use List::MoreUtils qw/mesh/;
 use vars qw/$VERSION @ISA @EXPORT_OK/;
 
 BEGIN {
-    $VERSION   = '0.04';
+    $VERSION   = '0.05';
     @ISA       = qw{Exporter};
     @EXPORT_OK = qw{poc poc_without_fft};
 }
@@ -108,17 +108,17 @@ __END__
 
 =head1 NAME
 
-Statistics::PhaseOnlyCorrelation - calculate the phase only correlation
+Math::PhaseOnlyCorrelation - calculate the phase only correlation
 
 
 =head1 VERSION
 
-This document describes Statistics::PhaseOnlyCorrelation version 0.04
+This document describes Math::PhaseOnlyCorrelation version 0.05
 
 
 =head1 SYNOPSIS
 
-    use Statistics::PhaseOnlyCorrelation qw/poc/;
+    use Math::PhaseOnlyCorrelation qw/poc/;
 
     my $array1 = [1, 2, 3, 4, 5, 6, 7, 8];
     my $array2 = [1, 2, 3, 4, 5, 6, 7, 8];
@@ -129,7 +129,7 @@ Or if you want to use own FFT function, you may use like so:
 
     use Math::FFT;
     use List::MoreUtils qw/mesh/;
-    use Statistics::PhaseOnlyCorrelation qw/poc_without_fft/;
+    use Math::PhaseOnlyCorrelation qw/poc_without_fft/;
 
     my @array1 = (1, 2, 3, 4, 5, 6, 7, 8);
     my @array2 = (1, 2, 3, 4, 5, 6, 7, 8);
@@ -176,7 +176,7 @@ This function needs two arguments. Both of arguments are array reference, these 
 
 =head1 CONFIGURATION AND ENVIRONMENT
 
-Statistics::PhaseOnlyCorrelation requires no configuration files or environment variables.
+Math::PhaseOnlyCorrelation requires no configuration files or environment variables.
 
 
 =head1 DEPENDENCIES

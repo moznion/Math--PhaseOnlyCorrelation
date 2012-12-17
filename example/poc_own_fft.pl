@@ -8,7 +8,7 @@ use Math::FFT;
 
 use FindBin;
 use lib ("$FindBin::Bin/../lib");
-use Statistics::PhaseOnlyCorrelation qw/poc_without_fft/;
+use Math::PhaseOnlyCorrelation qw/poc_without_fft/;
 
 my @array1     = ( 1, 2, 3, 4, 5, 6, 7, 8 );
 my @array2     = ( 1, 2, 3, 4, 5, 6, 7, 8 );
