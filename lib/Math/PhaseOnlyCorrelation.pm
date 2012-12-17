@@ -10,7 +10,7 @@ use List::MoreUtils qw/mesh/;
 use vars qw/$VERSION @ISA @EXPORT_OK/;
 
 BEGIN {
-    $VERSION   = '0.05';
+    $VERSION   = '0.06';
     @ISA       = qw{Exporter};
     @EXPORT_OK = qw{poc poc_without_fft};
 }
@@ -113,7 +113,7 @@ Math::PhaseOnlyCorrelation - calculate the phase only correlation
 
 =head1 VERSION
 
-This document describes Math::PhaseOnlyCorrelation version 0.05
+This document describes Math::PhaseOnlyCorrelation version 0.06
 
 
 =head1 SYNOPSIS
@@ -198,7 +198,7 @@ None reported.
 No bugs have been reported.
 
 Please report any bugs or feature requests to
-C<bug-statistics-phaseonlycorrelation@rt.cpan.org>, or through the web interface at
+C<bug-math-phaseonlycorrelation@rt.cpan.org>, or through the web interface at
 L<http://rt.cpan.org>.
 
 

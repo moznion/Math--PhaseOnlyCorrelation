@@ -1,5 +1,8 @@
 Revision history for Math-PhaseOnlyCorrelation
 
+0.06  Tue Dec 18 03:09:27 +0900(JST) 2012
+    - Fixed misprints in POD.
+
 0.05  Mon Dec 17 15:32:33 +0900(JST) 2012
     - Changed module name.
       (Statistics::PhaseOnlyCorrelation -> Math::PhaseOnlyCorrelation)
